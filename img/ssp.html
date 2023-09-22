@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>stein saks papir</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; /* Center both vertically and horizontally within the viewport */
+            margin: 0;
+            font-size: 40px;
+            font-weight: bold;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: darkslategray;
+        }
+
+        /* Style the images to have a fixed width and display inline-block */
+        .image-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        img {
+            width: 150px; /* Adjust the width as needed */
+            cursor: pointer;
+            margin: 10px; /* Add some margin to separate them */
+        }
+
+        h1 {
+            margin-bottom: 20px; /* Add margin below the header */
+        }
+    </style>
+</head>
+<body>
+    <h1>stein saks papir</h1>
+    <div class="image-container">
+        <img src="rock.jpg" id="stein">
+        <img src="paper.jpg" id="papir">
+        <img src="scissor.jpg" id="saks">
+    </div>
+    <div id="output"></div>
+    <script type="module">
+        //model
+        const gameState = {
+            userChoice: null,
+            computerChoice: null,
+            winner: null,
+        };
+
+        //View
+        const outputDiv = document.getElementById("output");
+
+        //controller
+        const setUserChoice = (choice) => {
+            gameState.userChoice = choice;
+            computerSelect();
+        }
+
+        const computerSelect = () => {
+            let randomChoice = Math.floor(Math.random() * 3) + 1;
+            if (randomChoice === 1) {
+                gameState.computerChoice = "stein";
+            } else if (randomChoice === 2) {
+                gameState.computerChoice = "saks";
+            } else if (randomChoice === 3) {
+                gameState.computerChoice = "papir";
+            }
+            checkWinning();
+        }
+
+        const checkWinning = () => {
+            if (gameState.userChoice === "stein" && gameState.computerChoice === "saks"
+                || gameState.userChoice === "papir" && gameState.computerChoice === "stein"
+                || gameState.userChoice === "saks" && gameState.computerChoice === "papir") {
+                gameState.winner = "You";
+            } else if (gameState.computerChoice === "stein" && gameState.userChoice === "saks"
+                || gameState.computerChoice === "papir" && gameState.userChoice === "stein"
+                || gameState.computerChoice === "saks" && gameState.userChoice === "papir") {
+                gameState.winner = "Computer";
+            } else if (gameState.userChoice !== "none" && gameState.userChoice === gameState.computerChoice) {
+                gameState.winner = "No one";
+            }
+
+            showResults();
+        }
+
+        const showResults = () => {
+            if (gameState.winner !== "none") {
+                outputDiv.innerHTML = `
+                    You chose ${gameState.userChoice} - computer chose ${gameState.computerChoice} <br>
+                    ${gameState.winner} won!
+                `;
+            }
+        }
+
+        //eventlisteners
+        document.getElementById("stein").addEventListener("click", () => setUserChoice("stein"));
+        document.getElementById("saks").addEventListener("click", () => setUserChoice("saks"));
+        document.getElementById("papir").addEventListener("click", () => setUserChoice("papir"));
+    </script>
+</body>
+</html>
